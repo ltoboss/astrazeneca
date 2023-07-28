@@ -5,12 +5,14 @@ function readCharactersQty(input){
         : null;    
 }
 
+
+function a(){
+    showErrorCard("hello")
+}
+
 function decryptMsg(firstUnstructionLength, secodInstructionLength, messageLength, firstInstruction, secondInstruction, message){
     let firstInstructionResult = findMessage(message, firstInstruction) ? "SI" : "NO";
     let secondInstructionResult = findMessage(message, secondInstruction) ? "SI" : "NO";
-    if(firstInstructionResult == "SI" && secondInstructionResult=="SI"){
-        return `NO\nNO`;
-    }
     let resultsToPrint = `${firstInstructionResult}\n${secondInstructionResult}`;
     return resultsToPrint;
 }
@@ -37,6 +39,3 @@ function findMessage(message, instruction){
 
     return false;
 }
-
-
-module.exports = {validateMessage, readCharactersQty, findMessage, validateLength,decryptMsg}

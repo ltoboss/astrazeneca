@@ -1,0 +1,33 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jugador Ganador</title>
+    <script src="./domManager.js"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <main>
+        <h1>Jugador Ganador</h1>
+        <label class="input-file-label">
+            <input type="file" name="file" id="file" accept=".txt">
+            Subir Archivo
+        </label>    
+    </main>
+    <section class="card error-handler">
+        <div class="card-content error-handler-content">
+            <button class="close-btn" onclick="hideErrorCard()">X</button>
+            <h2>Error</h2>
+            <p>Se han producido los siguientes errores:</p>
+            <ul id="error-details"></ul>
+        </div>
+    </section>
+    <section class="card success-handler">
+        <div class="card-content success-handler-content">
+            <button class="close-btn" onclick="hideSuccessCard()">X</button>
+            <h2>Archivo procesado con éxito</h2>
+            <p>Los resultados se están generando en un archivo</p>
+        </div>
+    </section>
+</body>
+</html>

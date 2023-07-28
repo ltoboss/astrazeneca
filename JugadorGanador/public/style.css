@@ -1,0 +1,95 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+.input-file-label {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+    border: 1px solid #ddd;
+}
+
+.input-file-label input[type="file"] {
+    display: none;
+}
+
+.input-file-label:hover {
+    background-color: #3f51b5;
+    color: #fff;
+}
+
+
+.card{
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: none;
+}
+
+.card-content{
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.error-handler-content {
+    background-color: #f44336;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.success-handler-content {
+    background-color: #1b5c1b;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+}
