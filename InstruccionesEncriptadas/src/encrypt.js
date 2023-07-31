@@ -1,28 +1,30 @@
+
+
+let resultInstruction = {
+    pass: "SI",
+    fail: "NO"
+}
+
 function readCharactersQty(input){
-    let charactersFounded = input.trim().split(/\s+/);
-    return charactersFounded.length > 0 
-        ? [charactersFounded[0], charactersFounded[1], charactersFounded[2]] 
+    return input.length > 0 
+        ? [input[0], input[1], input[2]] 
         : null;    
 }
 
-function decryptMsg(firstUnstructionLength, secodInstructionLength, messageLength, firstInstruction, secondInstruction, message){
-    let firstInstructionResult = findMessage(message, firstInstruction) ? "SI" : "NO";
-    let secondInstructionResult = findMessage(message, secondInstruction) ? "SI" : "NO";
-    if(firstInstructionResult == "SI" && secondInstructionResult=="SI"){
-        return `NO\nNO`;
+function decryptMsg(firstInstruction, secondInstruction, message){
+
+    const {errorMessages, setError} = require("./file")
+
+    let firstInstructionResult = findMessage(message, firstInstruction) ? resultInstruction.pass : resultInstruction.fail;
+    let secondInstructionResult = findMessage(message, secondInstruction) ? resultInstruction.pass : resultInstruction.fail;
+    if(firstInstructionResult === resultInstruction.pass && secondInstructionResult === resultInstruction.pass){
+        setError(errorMessages.multipleInstructions)
     }
     let resultsToPrint = `${firstInstructionResult}\n${secondInstructionResult}`;
     return resultsToPrint;
 }
 
-function validateLength(text, length){
-    return text.length == length;
-}
 
-function validateMessage(message){
-    let regex = /^[a-zA-Z0-9]+$/;
-    return regex.test(message);
-}
 
 function findMessage(message, instruction){
     let counter = 0;
@@ -39,4 +41,4 @@ function findMessage(message, instruction){
 }
 
 
-module.exports = {validateMessage, readCharactersQty, findMessage, validateLength,decryptMsg}
+module.exports = {readCharactersQty, findMessage,decryptMsg}

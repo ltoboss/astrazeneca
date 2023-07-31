@@ -1,12 +1,21 @@
-import tkinter as tk
-from tkinter import filedialog
+import sys
 
 
-def getFileInput(root):
-    root.withdraw();
-    fileSelected = filedialog.askopenfilename(title="Select a file:")
-    root.destroy();
-    return fileSelected;
+def getFileInput():
+    if len(sys.argv) < 2:
+        print("You must give the input file")
+        sys.exit();
+
+    fileSelected = sys.argv[1]
+
+    if "." in fileSelected and not fileSelected.lower().endswith(".txt"):
+        print("You must give a valid file (text file)")
+        return False
+    else:
+        if "." not in fileSelected:
+            return fileSelected + ".txt"
+        else:
+            return fileSelected
 
 def readLinesInput(lines):
     values = [];
@@ -29,11 +38,27 @@ def errorManager(error):
     print(error)
     raise SystemExit(1)
 
+def saveFile(input):
+
+    resultFile = "result.txt"
+    if len(sys.argv) > 2:
+        resultFile = sys.argv[2]
+
+    if "." in resultFile and not resultFile.lower().endswith(".txt"):
+        removeExtension = resultFile.rsplit(".",1)
+        if len(removeExtension) > 1:
+            resultFile = removeExtension[0] + ".txt"
+        else:
+            resultFile += ".txt" 
+    else:
+        resultFile += ".txt" 
+    with open(resultFile, "w") as newFile:
+        newFile.write(input)
+
+    print(f"File {resultFile} was created")
 
 def main():
-    root = tk.Tk()
-
-    fileSelected = getFileInput(root)
+    fileSelected = getFileInput()
 
     if fileSelected:
         try:
@@ -42,10 +67,10 @@ def main():
                 values = readLinesInput(lines)
 
                 if not len(values) > 1:
-                    errorManager("The value of score from player 1 is not valid")
+                    errorManager("The value of score from players is not valid")
 
-                firstPlayerGames = [item[0] for item in values if len(item) > 1]
-                secondPlayerGames = [item[1] for item in values if len(item) > 1]
+                maxDiff = 0
+                winner = 1
                 numberOfRounds = [item[0] for item in values if len(item) == 1]
 
                 if not validateInputValue(numberOfRounds[0]):
@@ -54,27 +79,17 @@ def main():
                 if not len(values) - 1 == numberOfRounds[0]:
                     errorManager("The number of rounds given is different to the rounds in file")
 
-                winner = 0
-                advantage = 0
+                for item in values:
+                    if len(item) > 1:
+                        diff = abs(item[0] - item[1])
+                        if(diff > maxDiff):
+                            maxDiff = diff
+                            winner = 1 if item[0] > item[1] else 2
 
-                if max(firstPlayerGames) > max(secondPlayerGames):
-                    highest_index = firstPlayerGames.index(max(firstPlayerGames))
-                    winner = 1
-                else:
-                    highest_index = secondPlayerGames.index(max(secondPlayerGames))
-                    winner = 2
 
-                advantage = abs(firstPlayerGames[highest_index] - secondPlayerGames[highest_index])
+                
+                saveFile(f"{winner} {maxDiff}")
 
-                placeToSave = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text files", "*.txt")], title="Save as...")
-
-                if len(placeToSave) < 1:
-                    placeToSave = "result.txt"
-
-                with open(placeToSave, "w") as newFile:
-                    newFile.write(f"{winner} {advantage}")
-
-                print("File created as result.txt")
 
         except FileNotFoundError:
             print("The file was not founded")

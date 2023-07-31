@@ -8,8 +8,6 @@ let listErrors = {
     discrepancyBetweenGames : `The number of rounds given is different to the rounds in file`
 }
 
-
-
 function loadFile(file){
     return new Promise((resolve, reject) => {
         fs.readFile(file.path, "utf-8", (error, success) => {
@@ -34,9 +32,8 @@ function readFileContent(file){
         
         if(file.length < 2)   
             setError(listErrors.invalidFile);
-
-        let {winner, diff} = getScores(file.split(/\r\n|\n/));
-        return {data:`${winner} ${diff}`};
+        let data = file.split(/\r\n|\n/);
+        return getScores(data);
 
     }catch(e){
         return {error:allErrors};
@@ -45,37 +42,32 @@ function readFileContent(file){
 }
 
 function getScores(information) {
-    let games = information[0];
-    let diffRounds = []
 
+    let games = information[0];
     if(validGames(games)){
-        games = parseInt(games);
-        if(games != (information.length-1))
+        games = Number(games);
+        let maxDiff = 0;
+        let winner = 1;
+        let [,...rounds] = information;
+
+        if(games != rounds.length)
             setError(listErrors.discrepancyBetweenGames);
 
-        for(let i = 1; i <= games; i++){
-            let playersScore = information[i].split(/\s+/).map(Number);
-            let winner, diff = 0;
-
-            if(validScores(playersScore[0],playersScore[1])){
-                diff = Math.abs(playersScore[0] - playersScore[1]);
-                winner = playersScore[0] > playersScore[1] ? 1 : 2;
-                
-                diffRounds.push({
-                    diff,
-                    winner
-                })
+        for(let i = 0; i < games; i++){
+            let playersScore = rounds[i].split(/\s+/).map(Number);
+            if(validScores(playersScore[0], playersScore[1])){
+                let diff = Math.abs(playersScore[0] - playersScore[1]);
+                if(diff > maxDiff){
+                    maxDiff = diff;
+                    winner =  playersScore[0] > playersScore[1] ? 1 : 2;
+                }
             }
         }
-        let res = diffRounds.find((i => i.diff == Math.max(...diffRounds.map(item => item.diff))));
-        return res;
+        return {data: `${winner} ${maxDiff}`};
     }
-
-    
 }
 
 function validScores(score1, score2){
-
     if(score1==null || score2==null )
         setError(listErrors.scorePlayerInvalid);
 

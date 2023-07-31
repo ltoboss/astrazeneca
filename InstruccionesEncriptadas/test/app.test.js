@@ -9,6 +9,7 @@ describe('Instrucciones encriptadas', () => {
       let a =  readFileContent(input);
       expect(expected).to.equal(a);
     });
+
     it('La función readFileContent deberá traer el resultado corrrecto', () => {
       const input = `17 22 47\nBienvenidoAMexico\nBienvenidoAGuadalajara\nCCcdBbbiiienVvenidoAaGjuaDdalaaaJjaarrraaaXXccc`;
       const expected = "NO\nSI";
@@ -53,17 +54,33 @@ describe('Instrucciones encriptadas', () => {
       const expected = "The data b it's incorrect, lenght (1) doesn't match or it's size is not allowed";
       expect(() => readFileContent(input)).to.throw(expected)
     });
-    
-
-    it('La función readFileContent deberá traer ambos en falso a pesar de que se cumplan ambas condiciones', () => {
-      const input = `22 22 59\nBienvenidoAGuadalajara\nBienvenidoAGuadalajara\nCCccccCBieasdnasdvasdeasdnasdidoasdadassAGuadalajaracdsCSDd`;
-      const expected = "NO\nNO";
-      expect(expected).to.equal(readFileContent(input));
-    });
-
 
     it('La función readFileContent deberá traer un error relacionado con el archivo', () => {
       const input = `0 22 59\nBienvenidoAGuadalajara\nCCccccCBieasdnasdvasdeasdnasdidoasdadassAGuadalajaracdsCSDd`;
+      const expected = "The content of the file is incorrect, please verify";
+      expect(() => readFileContent(input)).to.throw(expected)
+    });
+
+    it('La función readFileContent deberá traer un error por multiples instrucciones encontradas', () => {
+      const input = `5 7 28\nHolaa\nATodoss\nASkjHolaa8934jATodo9ossss3ds`;
+      const expected = "The message has both instructions, please verify";
+      expect(() => readFileContent(input)).to.throw(expected)
+    });
+    
+    it('La función readFileContent deberá traer un error por caracteres repetidos en la instrucción 1', () => {
+      const input = `6 7 20\nHolaaa\nATodoss\nASkjHolaaa8934jAs3ds`;
+      const expected = "One of the instructions has more than 2 consecutives letters";
+      expect(() => readFileContent(input)).to.throw(expected)
+    });
+    
+    it('La función readFileContent deberá traer un error por caracteres repetidos en la instrucción 2', () => {
+      const input = `5 8 26\nHolaa\nATodosss\nASkjHola893ATodosss4jAs3ds`;
+      const expected = "One of the instructions has more than 2 consecutives letters";
+      expect(() => readFileContent(input)).to.throw(expected)
+    });
+
+    it('La función readFileContent deberá traer un error relacionado con el archivo', () => {
+      const input = `22 9 59 129\nBienvenidoAGuadalajara\nHolaMundo\nCCccccCBieasdnasdvasdeasdnasdidoasdadassAGuadalajaracdsCSDd\nNoDebería\nIncluir\nEsto`;
       const expected = "The content of the file is incorrect, please verify";
       expect(() => readFileContent(input)).to.throw(expected)
     });
